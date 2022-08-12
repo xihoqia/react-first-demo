@@ -1,0 +1,65 @@
+#components-layout-demo-custom-trigger .trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
+}
+
+#components-layout-demo-custom-trigger .logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+.ant-layout-sider{
+  height: 100vh;
+}
+.home-text{
+  width: 400px;
+  height: 80px;
+  margin: 0 auto;
+  line-height:80px ;
+  font-size: 60px;
+  text-align: center;
+  top: 50px;
+  position: relative;
+  top: 180px;
+  color: #efef63;
+}
+.home-button{
+  display: block;
+  position: relative;
+  top: 280px;
+  margin: 0 auto;
+  width: 150px;
+  height: 40px;
+  border: none;
+  border-radius: 20px;
+  background-color: skyblue;
+  color: #fff;
+  cursor: pointer;
+}
+*{
+  list-style: none;
+}
+
+.clock-wrapper{
+  float: right;
+  position: relative;
+ top: -120px;
+}
+.set-content{
+  width: 500px;
+  height: 200px;
+  background-color: #bfa;
+  margin: 0 auto;
+  margin-top: 40px;
+}
