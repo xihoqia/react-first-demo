@@ -1,13 +1,14 @@
-import React ,{ useState,useEffect,useRef }from "react";
-import { Button, Checkbox,Radio,Input,Modal } from "antd";
-import CountDown from "../components/CountDowm";
+import React ,{ useState,useEffect,}from "react";
+import { Button, Checkbox,Radio,Input,Modal,Progress } from "antd";
 import data from '../mock.json'
 import Field from "../global";
+import { useStore } from "../store";
 const { TextArea } = Input;
 
 export default function Answer() {
   const [initData, setInitData] = useState();
   const [num, setNum] = useState(0);
+  const {numStore,stateStore}=useStore()
   const onChange=(e)=>{
     Field.answerList[num]=e.target.value;
   }
@@ -20,12 +21,35 @@ export default function Answer() {
     };
     getInitData();
   }, []);
-  const countDownRef = useRef();
+  const [percent, setPercent] = useState(0);
+  const [x,setX]=useState(numStore.num)
+  useEffect(()=>{
+    let timer=null
+   if (x>0) {
+    timer = setTimeout(()=>{
+      setPercent(percent+(100/numStore.num))
+      setX((x)=>x-1)
+    },1000)
+   }
+   if (x===0) {
+    if (stateStore.state) {
+      Modal.confirm({ content: (
+        <div>正确答案是：{initData && initData[num].true}</div>
+    ),})
+    }
+   }
+   return ()=>{ 
+    clearTimeout(timer)
+  }
+  },[x,percent,initData,num,numStore.num,stateStore.state])
 
+  useEffect(()=>{
+    setX(numStore.num)
+  },[numStore.num])
+  
   return (
     <div>
       <div>
-      <CountDown   key={num} ref={countDownRef}/>
       {/* 题目 */}
      {initData ? <div>{initData[num].question}</div>:null}
     {/* 内容 */}
@@ -57,20 +81,33 @@ export default function Answer() {
         ):null}
       </div> 
       <div className="clock-wrapper">
+      <Progress type="circle" width={80} percent={percent} format={() => `${x} S`} />
       </div>
+      <Button type="primary" style={{ borderRadius: "15px" }} 
+      disabled={num ===0 }
+      onClick={() => {
+        setNum(num -1)
+        setX(numStore.num)
+        setPercent(0)
+        }}>
+        上一题
+      </Button>
       <Button type="primary" style={{ borderRadius: "15px" }} 
       disabled={num === 9}
       onClick={() => {
-        setNum(num + 1)}}>
+        setNum(num + 1)
+        setX(numStore.num)
+        setPercent(0)
+        }}>
         下一题
       </Button>
       <Button type="primary" style={{ borderRadius: "15px"}}
       onClick={()=>{
-        Modal.confirm({ content: (
-          <>
-            <div>正确答案是：{initData && initData[num].true}</div>
-          </>
-        ),})
+       
+        Modal.confirm({ 
+          content: (<div>正确答案是：{initData && initData[num].true}</div>),
+      }
+        )
       }}>
         查看答案
       </Button>
